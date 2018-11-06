@@ -2,7 +2,7 @@
 
 This tool allows you to quickly and easily create app.yaml
 
-You configure your App Engine app's settings in the app.yaml file. 
+You configure your App Engine app's settings in the [app.yaml](https://cloud.google.com/appengine/docs/standard/go111/config/appref) file. 
 Sometimes we need to configure sensitive env_variables and they should not be in the same 
 repository as a code base.
 This tool allows you to grab secrets from [Hashicorp Vault](https://www.vaultproject.io/)
