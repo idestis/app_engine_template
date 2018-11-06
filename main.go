@@ -52,23 +52,31 @@ func HashiVault(request string) interface{} {
 		Address: vaultAddr,
 	})
 	if err != nil {
-		log.Panic(err)
+		log.Error(err)
+		os.Exit(1)
 	}
 	keyfield := strings.Split(request, ".")
 	client.SetToken(vaultToken)
 	secretValues, err := client.Logical().Read(keyfield[0])
 	if err != nil {
-		log.Panic(err)
+		log.Error(err)
+		os.Exit(1)
 	}
 	dataMap := secretValues.Data
 	return dataMap[keyfield[1]]
 }
 
 func main() {
-	source := flag.String("source", "./example/template.tmpl", "Path to source template")
+	source := flag.String("source", "", "Path to source template")
 	dest := flag.String("dest", "./app.yaml", "Filename how to save output")
 	extra := flag.String("extra_vars", "", "Path to file with extra variables")
 	flag.Parse()
+
+	if *source == "" {
+		log.Error("-source is required to start")
+		os.Exit(1)
+	}
+
 	fmap := template.FuncMap{
 		"hashiVault": HashiVault,
 	}
@@ -89,17 +97,18 @@ func main() {
 		err = yaml.Unmarshal(vars, &Vars)
 
 		if err != nil {
-			log.Panic(err)
+			log.Error(err)
+			os.Exit(1)
 		}
 	}
 	f, err := os.Create(*dest)
 	if err != nil {
-		log.Panic("Create file: ", err)
+		log.Error("Create file: ", err)
 		return
 	}
 	err = yamlTemplate.Execute(f, Vars)
 	if err != nil {
-		log.Panic("Execute template: ", err)
+		log.Error("Execute template: ", err)
 		return
 	}
 	f.Close()
