@@ -1,17 +1,16 @@
 package main
 
 import (
+	"bytes"
 	"flag"
-	log "github.com/sirupsen/logrus"
 	vaultApi "github.com/hashicorp/vault/api"
+	log "github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
+	"io/ioutil"
+	"os"
 	"path"
 	"strings"
 	"text/template"
-	"io/ioutil"
-	"os"
-	"path/filepath"
-
 )
 
 type Vault struct {
@@ -75,18 +74,19 @@ func main() {
 	}
 	var Vars PossibleVars
 	filename := path.Base(*source)
-	yamlTemplate, err := template.New(filename).Funcs(fmap).ParseFiles(*source)
-	if err != nil {
-		log.Panic(err)
-	}
+	yamlTemplate := template.Must(template.New(filename).Funcs(fmap).ParseFiles(*source))
 	if *extra != "" {
-		// Check for extra vars
-		variables, err := filepath.Abs(*extra)
-		varsFile, err := ioutil.ReadFile(variables)
-		if err != nil {
-			log.Panic(err)
-		}
-		err = yaml.Unmarshal(varsFile, &Vars)
+		var tpl bytes.Buffer
+		varsFile := path.Base(*extra)
+		variables := template.Must(template.New(varsFile).Funcs(fmap).ParseFiles(*extra))
+		err := variables.Execute(&tpl, "no data needed")
+		//variables, err := filepath.Abs(*extra)
+		//varsFile, err := ioutil.ReadFile(variables)
+		//if err != nil {
+		//	log.Panic(err)
+		//}
+		vars, _ := ioutil.ReadAll(&tpl)
+		err = yaml.Unmarshal(vars, &Vars)
 
 		if err != nil {
 			log.Panic(err)

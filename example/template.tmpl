@@ -12,8 +12,8 @@ handlers:
 
 {{if .EnvVariables -}}
 env_variables:
-  {{range $key, $value :=  .EnvVariables -}}
+  {{- range $key, $value :=  .EnvVariables}}
   {{$key}}: {{$value}}
   {{- end}}
-  SENSITIVE_DATA: {{ "secret/customers/databases/example-com.password" | hashiVault }}
+  API_KEY: {{ "secret/customers/api-keys/example-com.password" | hashiVault }}
 {{- end}}

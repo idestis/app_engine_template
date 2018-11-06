@@ -5,6 +5,9 @@ env: flex
 
 env_variables:
   foo: bar
+  SENSITIVE_DATA: {{ "secret/customers/databases/example-com.password" | hashiVault }}
+  bar: foo
+
 
 handlers:
 - url: /.*
