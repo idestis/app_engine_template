@@ -1,0 +1,13 @@
+runtime: go111
+threadsafe: true
+env: flex
+
+
+env_variables:
+  foo: bar
+
+handlers:
+- url: /.*
+  script: auto
+- url: /stylesheets
+  static_dir: stylesheets

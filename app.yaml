@@ -1,0 +1,17 @@
+runtime: php7
+env: flex
+threadsafe: true
+
+handlers:
+
+  - url: /*
+    script: main
+
+  - url: /sick-endpoint
+    script: second
+
+
+env_variables:
+  BUCKET: cdn.awescrm.cloud
+  DB_PASSWORD: GB2fZvYF69Sedjwh
+  APP_NAME: Laggerbox

@@ -1,0 +1,19 @@
+runtime: {{ .Runtime }}
+env: {{.Env}}
+threadsafe: {{.Threadsafe}}
+
+{{if .Handlers -}}
+handlers:
+{{range .Handlers}}
+- url: {{.Url}}
+  script: {{.Script}}
+{{end}}
+{{- end}}
+
+{{if .EnvVariables -}}
+env_variables:
+  {{range $key, $value :=  .EnvVariables -}}
+  {{$key}}: {{$value}}
+  {{- end}}
+  SENSITIVE_DATA: {{ "secret/customers/databases/example-com.password" | hashiVault }}
+{{- end}}
