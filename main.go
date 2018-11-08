@@ -19,30 +19,33 @@ type Vault struct {
 
 type PossibleVars struct {
 	// TODO: Add autoscalling variables
-	Env        string `yaml:"env"`
-	Service	   string `yaml:"service"`
-	Threadsafe bool   `yaml:"threadsafe";template:"threadsafe"`
-	Runtime		string 	`yaml:"runtime"`
-	ApiVersion  string `yaml:"api_version"`
-	RuntimeConfig []struct{
+	Env           string `yaml:"env"`
+	Service       string `yaml:"service"`
+	Threadsafe    bool   `yaml:"threadsafe";template:"threadsafe"`
+	Runtime       string `yaml:"runtime"`
+	ApiVersion    string `yaml:"api_version"`
+	RuntimeConfig []struct {
 		DocumentRoot string `yaml:"document_root"`
 	} `yaml:"runtime_config"`
-	Handlers   []struct {
-		Url    string `yaml:"url"`
-		Script string `yaml:"script"`
-		Secure string `yaml:"secure"`
-		RedirectHttpResponseCode int `yaml:"redirect_http_response_code"`
-		StaticDir string `yaml:"static_dir"`
-		HttpHeaders map[string]string `yaml:"http_headers"`
-		Upload string `yaml:"upload"`
+	Handlers []struct {
+		Url                      string            `yaml:"url"`
+		Script                   string            `yaml:"script"`
+		Secure                   string            `yaml:"secure"`
+		RedirectHttpResponseCode int               `yaml:"redirect_http_response_code"`
+		StaticDir                string            `yaml:"static_dir"`
+		HttpHeaders              map[string]string `yaml:"http_headers"`
+		Upload                   string            `yaml:"upload"`
 	} `yaml:"handlers"`
-	EnvVariables map[string]string `yaml:"env_variables"`
-	InstanceClass string `yaml:"instance_class"`
-	ErrorHandlers   []struct {
-		File    string `yaml:"file"`
+	EnvVariables  map[string]string `yaml:"env_variables"`
+	InstanceClass string            `yaml:"instance_class"`
+	ErrorHandlers []struct {
+		File      string `yaml:"file"`
 		ErrorCode string `yaml:"error_code"`
 	} `yaml:"error_handlers"`
 	DefaultExpiration string `yaml:"default_expiration"`
+	BetaSettings      struct {
+		CloudSQLInstance string `yaml:"cloud_sql_instances"`
+	} `yaml:"beta_settings"`
 }
 
 func HashiVault(request string) interface{} {
