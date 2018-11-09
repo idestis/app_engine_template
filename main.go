@@ -91,11 +91,6 @@ func main() {
 		varsFile := path.Base(*extra)
 		variables := template.Must(template.New(varsFile).Funcs(fmap).ParseFiles(*extra))
 		err := variables.Execute(&tpl, "no data needed")
-		//variables, err := filepath.Abs(*extra)
-		//varsFile, err := ioutil.ReadFile(variables)
-		//if err != nil {
-		//	log.Panic(err)
-		//}
 		vars, _ := ioutil.ReadAll(&tpl)
 		err = yaml.Unmarshal(vars, &Vars)
 
