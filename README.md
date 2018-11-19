@@ -12,6 +12,16 @@ of this [package](https://godoc.org/text/template)
 
 We support variables, pipelines with if-else and loops with range.
 
+## Synopsis
+
+`app_engine_template [-source=PATH] [-dest=PATH] [-exta_vars=PATH]`
+
+## List command flags
+
+`-source = PATH`
+
+The path of source template from which we need to create 
+
 ## Dependencies
 
 - [github.com/sirupsen/logrus](https://github.com/sirupsen/logrus) - our loggin based on this package

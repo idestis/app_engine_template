@@ -17,7 +17,7 @@ type Vault struct {
 	Result string
 }
 
-type PossibleVars struct {
+type References struct {
 	// TODO: Add autoscalling variables
 	Env           string `yaml:"env"`
 	Service       string `yaml:"service"`
@@ -35,6 +35,11 @@ type PossibleVars struct {
 		StaticDir                string            `yaml:"static_dir"`
 		HttpHeaders              map[string]string `yaml:"http_headers"`
 		Upload                   string            `yaml:"upload"`
+		Login                    string            `yaml:"login"`
+		AuthFailAction           string            `yaml:"auth_fail_action"`
+		StaticFiles              string            `yaml:"static_files"`
+		Expiration               string            `yaml:"expiration"`
+		MimeType                 string            `yaml:"mime_type"`
 	} `yaml:"handlers"`
 	EnvVariables  map[string]string `yaml:"env_variables"`
 	InstanceClass string            `yaml:"instance_class"`
@@ -46,6 +51,37 @@ type PossibleVars struct {
 	BetaSettings      struct {
 		CloudSQLInstance string `yaml:"cloud_sql_instances"`
 	} `yaml:"beta_settings"`
+	Builtins []struct {
+		Appstats  string `yaml:"appstats"`
+		Deferred  string `yaml:"deferred"`
+		RemoteApi string `yaml:"remote_api"`
+	} `yaml:"builtins"`
+	Includes        []string `yaml:"includes"`
+	InboundServices []string `yaml:"inbound_services"`
+	Libraries       []struct {
+		Name    string `yaml:"name"`
+		Version string `yaml:"version"`
+	} `yaml:"libraries"`
+	SkipFiles        []string `yaml:"skip_files"`
+	Version          string   `yaml:"version"`
+	AutomaticScaling []struct {
+		TargetCpuUtilization        string `yaml:"target_cpu_utilization"`
+		TargetThroughputUtilization string `yaml:"target_throughput_utilization"`
+		MinInstances                int    `yaml:"min_instances"`
+		MaxInstances                int    `yaml:"max_instances"`
+		MinPendingLatency           string `yaml:"min_pending_latency"`
+		MaxPendingLatency           string `yaml:"max_pending_latency"`
+		MaxConcurrentRequests       int    `yaml:"max_concurrent_requests"`
+		MinIdleInstances            int    `yaml:"min_idle_instances"`
+		MaxIdleInstances            int    `yaml:"max_idle_instances"`
+	} `yaml:"automatic_scaling"`
+	BasicScaling []struct {
+		MaxInstances int    `yaml:"max_instances"`
+		IdleTimeout  string `yaml:"idle_timeout"`
+	} `yaml:"basic_scaling"`
+	ManualScaling []struct {
+		Instances int `yaml:"instances"`
+	} `yaml:"manual_scaling"`
 }
 
 func HashiVault(request string) interface{} {
@@ -83,7 +119,7 @@ func main() {
 	fmap := template.FuncMap{
 		"hashiVault": HashiVault,
 	}
-	var Vars PossibleVars
+	var Vars References
 	filename := path.Base(*source)
 	yamlTemplate := template.Must(template.New(filename).Funcs(fmap).ParseFiles(*source))
 	if *extra != "" {
