@@ -1,5 +1,7 @@
 # App Engine Template
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ad712e2c9fa34594b4974922deda63d9)](https://app.codacy.com/app/idestis/app_engine_template?utm_source=github.com&utm_medium=referral&utm_content=idestis/app_engine_template&utm_campaign=Badge_Grade_Dashboard)
+
 This tool allows you to quickly and easily create app.yaml
 
 You configure your App Engine app's settings in the [app.yaml](https://cloud.google.com/appengine/docs/standard/go111/config/appref) file. 
